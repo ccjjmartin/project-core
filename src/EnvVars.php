@@ -3,24 +3,34 @@
 namespace FourKitchens\ProjectBase;
 
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Filesystem\Filesystem;
+use Weevers\Path\Path;
 
 /**
  * Handles environment variables defined in project.yml.
  */
 class EnvVars {
 
+  protected static function getProjectRoot() {
+    $path = new Path();
+    return $path->resolve(__FILE__, '../../../../../');
+  }
+
   public function getProjectConfig() {
     $yaml = new Yaml();
+    $fs = new Filesystem();
+    $path = new Path();
     $projectConfig = [];
+    $projectRoot = self::getProjectRoot();
 
     try {
-      $projectConfig = $yaml->parse(file_get_contents('../project.yml'));
+      $projectConfig = $yaml->parse(file_get_contents($path->resolve($projectRoot, './project.yml')));
     }
     catch (Exception $e) {}
 
     // Get local project config from local.project.yml and merge.
     try {
-      $local_config = $yaml->parse(file_get_contents('../local.project.yml'));
+      $local_config = $yaml->parse(file_get_contents($path->resolve($projectRoot, './local.project.yml')));
       $projectConfig = array_replace_recursive($projectConfig, $local_config);
     }
     catch (Exception $e) {}

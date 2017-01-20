@@ -1,6 +1,6 @@
 <?php
 
-namespace FourKitchens\ProjectBase;
+namespace FourKitchens\ProjectCore;
 
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Filesystem\Filesystem;

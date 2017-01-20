@@ -1,19 +1,17 @@
 {
-  "name": "fourkitchens/project-base",
+  "name": "fourkitchens/project-core",
   "type": "library",
   "description": "Helper classes for Four Kitchens Drupal projects.",
   "keywords": ["project"],
   "license": "MIT",
   "require": {
-    "php": ">=5.5.0"
-  },
-  "require-dev": {
+    "php": ">=5.5.0",
     "symfony/yaml": ">=2.3",
     "symfony/filesystem": ">=2.3",
     "weevers/path": "~0.2.0"
   },
   "autoload": {
-    "psr-4": { "FourKitchens\\ProjectBase\\": "src" }
+    "psr-4": { "FourKitchens\\ProjectCore\\": "src" }
   },
   "authors": [
     {

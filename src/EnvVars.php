@@ -11,24 +11,37 @@ use Weevers\Path\Path;
  */
 class EnvVars {
 
+  /**
+   * Return the absolute path to the project root.
+   *
+   * @return string
+   *  Absolute path to the project root.
+   */
   protected static function getProjectRoot() {
     $path = new Path();
     return $path->resolve(__FILE__, '../../../../../');
   }
 
-  public function getProjectConfig() {
+  /**
+   * Get project configuration defined in project.yml.
+   *
+   * @return array
+   *   An associative array of project configuration settings.
+   */
+  public static function getProjectConfig() {
     $yaml = new Yaml();
     $fs = new Filesystem();
     $path = new Path();
     $projectConfig = [];
     $projectRoot = self::getProjectRoot();
 
+    // Parse project.yml.
     try {
       $projectConfig = $yaml->parse(file_get_contents($path->resolve($projectRoot, './project.yml')));
     }
     catch (Exception $e) {}
 
-    // Get local project config from local.project.yml and merge.
+    // Parse local.project.yml project config from local.project.yml and merge.
     try {
       $local_config = $yaml->parse(file_get_contents($path->resolve($projectRoot, './local.project.yml')));
       $projectConfig = array_replace_recursive($projectConfig, $local_config);
@@ -38,8 +51,11 @@ class EnvVars {
     return $projectConfig;
   }
 
+  /**
+   * Set the environment variables defined in project.yml.
+   */
   public function setEnvVars() {
-    $projectConfig = $this->getProjectConfig();
+    $projectConfig = self::getProjectConfig();
 
     if (isset($projectConfig['env'])) {
       $defaults = $projectConfig['env']['default'];

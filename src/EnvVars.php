@@ -3,7 +3,6 @@
 namespace FourKitchens\ProjectCore;
 
 use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\Filesystem\Filesystem;
 use Weevers\Path\Path;
 
 /**
@@ -30,7 +29,6 @@ class EnvVars {
    */
   public static function getProjectConfig() {
     $yaml = new Yaml();
-    $fs = new Filesystem();
     $path = new Path();
     $projectConfig = [];
     $projectRoot = self::getProjectRoot();

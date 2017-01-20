@@ -8,23 +8,19 @@ use Symfony\Component\Yaml\Yaml;
  * Handles environment variables defined in project.yml.
  */
 class EnvVars {
-  protected $yaml;
-
-  public function __construct(
-    $yaml = new Yaml();
-  )
 
   public function getProjectConfig() {
+    $yaml = new Yaml();
     $projectConfig = [];
 
     try {
-      $projectConfig = $this->yaml->parse(file_get_contents('../project.yml'));
+      $projectConfig = $yaml->parse(file_get_contents('../project.yml'));
     }
     catch (Exception $e) {}
 
     // Get local project config from local.project.yml and merge.
     try {
-      $local_config = $this->yaml->parse(file_get_contents('../local.project.yml'));
+      $local_config = $yaml->parse(file_get_contents('../local.project.yml'));
       $projectConfig = array_replace_recursive($projectConfig, $local_config);
     }
     catch (Exception $e) {}

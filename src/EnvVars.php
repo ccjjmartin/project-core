@@ -3,6 +3,7 @@
 namespace FourKitchens\ProjectCore;
 
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Filesystem\Filesystem;
 use Weevers\Path\Path;
 
 /**
@@ -29,6 +30,7 @@ class EnvVars {
    */
   public static function getProjectConfig() {
     $yaml = new Yaml();
+    $fs = new Filesystem();
     $path = new Path();
     $projectConfig = [];
     $projectRoot = self::getProjectRoot();
@@ -39,12 +41,16 @@ class EnvVars {
     }
     catch (Exception $e) {}
 
-    // Parse local.project.yml project config from local.project.yml and merge.
-    try {
-      $local_config = $yaml->parse(file_get_contents($path->resolve($projectRoot, './local.project.yml')));
-      $projectConfig = array_replace_recursive($projectConfig, $local_config);
+    // Check if a local.project.yml file exists.
+    if ($fs->exists($path->resolve($projectRoot, './local.project.yml'))) {
+      // Parse local.project.yml project config from local.project.yml and merge.
+      try {
+        $local_config = $yaml->parse(file_get_contents($path->resolve($projectRoot, './local.project.yml')));
+        $projectConfig = array_replace_recursive($projectConfig, $local_config);
+      }
+      catch (Exception $e) {
+      }
     }
-    catch (Exception $e) {}
 
     return $projectConfig;
   }
